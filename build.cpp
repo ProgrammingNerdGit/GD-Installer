@@ -6,6 +6,7 @@
 #include "String/String.h"
 #include "zipper.h"
 
+
 using vs = std::vector<std::string>;
 
 void error(std::string err){
@@ -45,7 +46,9 @@ int main(int argc, char** argv){
 
     }
     std::cout << "zipping file...\n";
-    if(zip(deps)){
+
+    bool Zip = zip(deps);
+    if(Zip){
         std::cout << "reading zip file...\n";
         std::ifstream zipFile("tmp.zip", std::ios::binary);
 
@@ -85,19 +88,30 @@ int main(int argc, char** argv){
         std::string tmplate = ss.str();
         tmplate = spp::replace(tmplate,"<vec>",sv);
         tmplate = spp::replace(tmplate,"<coms>",comsStr);
-
         out << tmplate;
 
         out.close();
 
-        std::cout << "compiling...\n";
-        system("@echo off && g++ out.cpp -o out");
+        if(OS_WIN){
+            std::cout << "compiling...\n";
+            system("@echo off && g++ out.cpp -o out");
 
-        std::cout << "deleting zip file...\n";
-        system("@echo off && del /F /Q tmp.zip");
+            std::cout << "deleting zip file...\n";
+            system("@echo off && del /F /Q tmp.zip");
 
-        std::cout << "deleting cpp file...\n";
-        system("@echo off && del /F /Q out.cpp"); 
+            std::cout << "deleting cpp file...\n";
+            system("@echo off && del /F /Q out.cpp");
+        }else{
+            std::cout << "compiling...\n";
+            system("g++ out.cpp -o out");
+
+            std::cout << "deleting zip file...\n";
+            system("rm -f tmp.zip");
+
+            std::cout << "deleting cpp file...\n";
+            system("rm -f out.cpp");
+        }
+         
 
         std::cout << "done!";
         
