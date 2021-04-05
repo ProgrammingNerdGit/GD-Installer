@@ -26,6 +26,8 @@ com=echo test >> file.vbs
 com=start www.google.com
 ```
 
+now put all files you want in the install into the same folder your `build.exe` or `build` file (depending if your using linux or windows) make sure template.cpp is also in there, now drag your txt file onto `build.exe` or on linux by doing `./build [filename]`
+
 ### any questions just ask =)
 
 
